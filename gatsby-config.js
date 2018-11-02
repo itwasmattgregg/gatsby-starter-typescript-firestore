@@ -43,6 +43,32 @@ module.exports = {
         ]
       }
     },
+    {
+      resolve: 'gatsby-source-firestore',
+      options: {
+        credential: require("./firebase.json"),
+        types: [
+          {
+            type: 'Book',
+            collection: 'books',
+            map: doc => ({
+              title: doc.title,
+              isbn: doc.isbn,
+              author___NODE: doc.author.id,
+            }),
+          },
+          {
+            type: 'Author',
+            collection: 'authors',
+            map: doc => ({
+              name: doc.name,
+              country: doc.country,
+              books___NODE: doc.books.map(book => book.id),
+            }),
+          },
+        ],
+      },
+    },
     'gatsby-transformer-json',
     {
       resolve: 'gatsby-plugin-canonical-urls',
